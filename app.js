@@ -18,7 +18,8 @@ const NICHES = {
       { id: 'mani', name: 'Маникюр + покрытие', dur: 90, price: 1800, kw: ['маникюр', 'ногт', 'гель', 'покрыт'] },
       { id: 'pedi', name: 'Педикюр', dur: 90, price: 2200, kw: ['педикюр', 'стоп', 'ступн'] },
       { id: 'brows', name: 'Брови + ламинирование', dur: 45, price: 1300, kw: ['бров', 'ламинир', 'архитектур'] }
-    ]
+    ],
+    popular: 'hair-cut'
   },
   barber: {
     label: '💈 Барбершоп', accent: '#1f6feb', accentSoft: '#e9f1ff', avatar: '✂',
@@ -32,7 +33,8 @@ const NICHES = {
       { id: 'cut-beard', name: 'Стрижка + борода', dur: 60, price: 1800, kw: ['комплекс', 'всё', 'все', 'оба'] },
       { id: 'shave', name: 'Королевское бритьё', dur: 40, price: 1100, kw: ['брить', 'бритьё', 'бритв', 'опасн'] },
       { id: 'kids', name: 'Детская стрижка', dur: 30, price: 900, kw: ['дет', 'ребён', 'ребен', 'сын'] }
-    ]
+    ],
+    popular: 'cut'
   },
   auto: {
     label: '🔧 Автосервис', accent: '#e8590c', accentSoft: '#fff0e6', avatar: '⚙',
@@ -44,9 +46,15 @@ const NICHES = {
       { id: 'to', name: 'Плановое ТО', dur: 120, price: 4500, kw: ['то', 'обслуж', 'масло', 'фильтр', 'регламент'] },
       { id: 'diag', name: 'Компьютерная диагностика', dur: 60, price: 1500, kw: ['диагност', 'ошибк', 'check', 'чек', 'горит', 'лампоч'] },
       { id: 'tire', name: 'Шиномонтаж', dur: 45, price: 2000, kw: ['шин', 'колес', 'резин', 'шиномонт', 'диск'] },
-      { id: 'brakes', name: 'Замена тормозов', dur: 90, price: 3500, kw: ['тормоз', 'колодк', 'скрип'] },
-      { id: 'susp', name: 'Ремонт подвески', dur: 180, price: 7000, kw: ['подвеск', 'стук', 'амортиз', 'рычаг', 'ход'] }
-    ]
+      { id: 'brakes', name: 'Замена тормозов', dur: 90, price: 3500, kw: ['тормоз', 'колодк'] },
+      { id: 'susp', name: 'Ремонт подвески', dur: 180, price: 7000, kw: ['подвеск', 'амортиз', 'рычаг'] }
+    ],
+    popular: 'diag',
+    symptoms: [{
+      kw: ['стучит', 'стук', 'гремит', 'скрип', 'скрежет', 'шум', 'вибра', 'вибри', 'дёрга', 'дерга', 'троит', 'глохн', 'не заводит', 'не едет', 'подтека', 'течёт', 'течет', 'дым', 'запах', 'перегрев', 'греется', 'кипит', 'лампоч', 'горит', 'ошибк', 'чек', 'check', 'загорел', 'странн', 'непонятн', 'что-то с', 'что то с'],
+      to: 'diag',
+      say: 'Чтобы не гадать по симптомам, начнём с диагностики — мастер найдёт причину и сразу скажет, что по работам и цене. На какой день записать машину на диагностику? 👇'
+    }]
   },
   clinic: {
     label: '🦷 Стоматология', accent: '#0d9488', accentSoft: '#e6f7f4', avatar: '✚',
@@ -57,10 +65,16 @@ const NICHES = {
     services: [
       { id: 'check', name: 'Осмотр + консультация', dur: 30, price: 800, kw: ['осмотр', 'консульт', 'провер', 'посмотр'] },
       { id: 'clean', name: 'Профгигиена', dur: 60, price: 3500, kw: ['гигиен', 'чистк', 'камень', 'налёт', 'налет', 'ультразв'] },
-      { id: 'caries', name: 'Лечение кариеса', dur: 60, price: 4500, kw: ['кариес', 'дырк', 'плом', 'болит', 'зуб'] },
-      { id: 'implant', name: 'Консультация по имплантации', dur: 40, price: 1000, kw: ['имплант', 'вставит', 'коронк', 'протез'] },
-      { id: 'white', name: 'Отбеливание', dur: 90, price: 12000, kw: ['отбел', 'бел', 'светл'] }
-    ]
+      { id: 'caries', name: 'Лечение кариеса', dur: 60, price: 4500, kw: ['кариес', 'дырк', 'пломб'] },
+      { id: 'implant', name: 'Консультация по имплантации', dur: 40, price: 1000, kw: ['имплант', 'вставить зуб', 'коронк', 'протез'] },
+      { id: 'white', name: 'Отбеливание', dur: 90, price: 12000, kw: ['отбел', 'белее', 'светлее'] }
+    ],
+    popular: 'check',
+    symptoms: [{
+      kw: ['болит', 'боль', 'ноет', 'ноющ', 'реагирует', 'чувствит', 'флюс', 'опухл', 'припухл', 'десна', 'дёсны', 'десны', 'кровоточ', 'шата', 'скол', 'откол', 'выпал', 'выпада', 'крошит', 'беспоко', 'воспал', 'гной', 'температур', 'не могу жевать', 'продуло'],
+      to: 'check',
+      say: 'Понимаю, это неприятно 🙁 Лучше начать с осмотра — врач определит причину (кариес, воспаление и т.д.) и сразу подберёт лечение. На какой день записать вас на осмотр? 👇'
+    }]
   }
 };
 
@@ -72,6 +86,8 @@ let busyMap = {};
 let selDayKey = null;
 let calMonthOffset = 0;
 let bookingsLog = [];
+let misses = 0;           // счётчик непониманий — чтобы не повторяться
+let pendingService = null; // услуга, предложенная к подтверждению (да/нет)
 
 const TIMES = ['10:00', '11:30', '13:00', '14:30', '16:00', '17:30', '19:00', '20:30'];
 const DOW = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
@@ -233,6 +249,8 @@ function resetChat(greet = true) {
   booking = { service: null, day: null, time: null, name: '', phone: '' };
   selDayKey = null;
   calMonthOffset = 0;
+  misses = 0;
+  pendingService = null;
   seedBusy();
   chatBody.innerHTML = '';
   clearQuick();
@@ -249,14 +267,24 @@ function offerServices() {
   setQuick(opts);
 }
 
-function findService(text) {
-  const t = text.toLowerCase();
-  let s = cfg().services.find((x) => x.id === text);
-  if (s) return s;
-  s = cfg().services.find((x) => t.includes(x.name.toLowerCase()));
-  if (s) return s;
-  return cfg().services.find((x) => x.kw.some((k) => t.includes(k)));
+const svc = (id) => cfg().services.find((x) => x.id === id);
+
+// совпадение ключа-основы по НАЧАЛУ слова: «шин» ловит «шины», но не «машина»;
+// «то» ловит «ТО»/«сделать то», но не «что-то». Окончание — любое.
+function kwHit(text, k) {
+  const esc = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp('(^|[^а-яёa-zA-ZА-ЯЁ-])' + esc, 'i').test(text);
 }
+
+// вернуть ВСЕ услуги, подходящие под текст (для распознавания неоднозначности)
+function matchServices(text) {
+  const byId = svc(text);
+  if (byId) return [byId];
+  const t = text.toLowerCase();
+  return cfg().services.filter((x) => t.includes(x.name.toLowerCase()) || x.kw.some((k) => kwHit(t, k)));
+}
+const matchSymptom = (low) => (cfg().symptoms || []).find((s) => s.kw.some((k) => kwHit(low, k)));
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 function resumeStep() {
   switch (state) {
@@ -284,6 +312,19 @@ async function handleInput(text, meta = {}) {
   const low = raw.toLowerCase();
   const freeText = state !== 'name' && state !== 'phone';
   if (freeText) {
+    // живое общение: приветствие, благодарность, запрос человека
+    if (/^(привет|здравствуй|здрасьте|здрасте|добрый|доброе|хай|ку|здаров|здорово|йоу|алло|ало)/.test(low) && low.length < 22) {
+      await botSay(pick(['Здравствуйте! 🙂', 'Привет! 👋', 'Здравствуйте! Рад вас видеть 🙂']));
+      return resumeStep();
+    }
+    if (/(спасибо|благодар|спс|пасиб|пожалуйста\?|круто|отлично|супер|класс|здорово)/.test(low)) {
+      await botSay(pick(['Рад помочь! 🙌', 'Всегда пожалуйста 🙂', 'Обращайтесь! 🙌']));
+      return resumeStep();
+    }
+    if (/(живой|оператор|с человеком|позов|позвон|менеджер|мастер ответ|реальн.{0,5}админ|настоящ.{0,5}админ)/.test(low)) {
+      await botSay('Конечно — передаю ваш диалог живому администратору, он подключится здесь же 🙋\nА пока, если удобно, могу записать вас сам.');
+      return resumeStep();
+    }
     if (/(сначал|заново|сброс)/.test(low)) { await botSay('Без проблем, начнём заново 🙂'); return offerServices(); }
     if (/(отмен|перенес|перенос)/.test(low)) { await botSay('Конечно! Записи можно переносить и отменять — просто напишите мне, я предложу другое время и напомню о визите.\n\n(В демо: кнопка ↺ сверху начинает диалог заново.)'); return resumeStep(); }
     if (/(скольк|цена|стоит|почём|почем|прайс|цены)/.test(low)) {
@@ -304,14 +345,72 @@ async function handleInput(text, meta = {}) {
   }
 }
 
-async function onService(text) {
-  const s = findService(text);
-  if (!s) { await botSay('Уточните, пожалуйста — какая услуга нужна? Можно выбрать из списка 👇'); return offerServices(); }
+// перейти к выбору дня с выбранной услугой
+async function chooseService(s, intro) {
   booking.service = s;
+  pendingService = null;
+  misses = 0;
   state = 'date';
   showView('calendar', false);
-  await botSay(`Отлично — «${s.name}» (${s.dur} мин, ${ruble(s.price)}). На какой день вас записать? Выберите ниже 👇 или напишите, например «завтра».`);
+  await botSay(intro || `Отлично — «${s.name}» (${s.dur} мин, ${ruble(s.price)}). На какой день вас записать? Выберите ниже 👇 или напишите «завтра».`);
   offerDays();
+}
+
+async function onService(text) {
+  const low = text.toLowerCase();
+
+  // подтверждение ранее предложенной услуги («да / давайте»)
+  if (pendingService) {
+    if (/^(да|ага|давай|давайте|ок|окей|хорошо|конечно|запиш|запис|го|именно|нужно|нужна|хочу|\+|можно)/.test(low)) {
+      return chooseService(pendingService);
+    }
+    if (/(нет|друг|остальн|показать|другую|не надо|не то|не хочу)/.test(low)) {
+      pendingService = null;
+      await botSay('Хорошо, вот все услуги — выберите, что подходит 👇');
+      return offerServices();
+    }
+  }
+
+  const matches = matchServices(text);
+
+  // 1) симптом/жалоба → осмотр или диагностика (а не наугад «кариес»)
+  const sym = matchSymptom(low);
+  if (sym && !matches.some((m) => m.id !== sym.to)) {
+    return chooseService(svc(sym.to), sym.say);
+  }
+
+  // 2) «посоветуйте / не знаю / на ваш выбор» → рекомендация популярной услуги
+  if (/(посовет|подскаж|не знаю|незнаю|что выбрать|что взять|что лучше|на ваш выбор|реши|любую|без разниц|всё равно|все равно|что популярн)/.test(low)) {
+    const p = svc(cfg().popular);
+    pendingService = p;
+    misses = 0;
+    await botSay(`Чаще всего выбирают «${p.name}» — ${ruble(p.price)}, ${p.dur} мин. Записать на неё? (или напишите, что именно нужно)`);
+    return;
+  }
+
+  // 3) ровно одна услуга — записываем
+  if (matches.length === 1) return chooseService(matches[0]);
+
+  // 4) несколько вариантов — уточняем
+  if (matches.length > 1) {
+    misses = 0;
+    await botSay('Уточните, пожалуйста — что именно вас интересует:');
+    return setQuick(matches.map((s) => ({ label: s.name, value: s.id, kind: 'service', id: s.id })));
+  }
+
+  // 5) не понял — живой, не повторяющийся фоллбек с эскалацией
+  misses++;
+  if (misses >= 2) {
+    await botSay('Похоже, я не совсем понял 🙈 Давайте проще — выберите услугу кнопкой ниже. А если нужен живой человек, напишите «администратор», и я позову.');
+    misses = 0;
+    return offerServices();
+  }
+  await botSay(pick([
+    'Не совсем понял 🤔 Опишите чуть иначе или выберите из списка:',
+    'Хм, уточните, пожалуйста — что нужно сделать? Можно кнопкой:',
+    'Чтобы записать точно, подскажите услугу — вот варианты:'
+  ]));
+  offerServices();
 }
 
 // кнопки-дни прямо в чате — ближайшие свободные дни
