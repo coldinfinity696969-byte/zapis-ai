@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ЗаписьИИ — ИИ-администратор для записи клиентов</title>
+  <meta name="description" content="ИИ-ассистент отвечает клиентам, подбирает услугу и время, сам бронирует слот и шлёт напоминания. Демо для салонов, барбершопов, автосервисов и клиник." />
+  <meta property="og:title" content="ЗаписьИИ — ИИ-администратор для записи клиентов" />
+  <meta property="og:description" content="ИИ отвечает клиентам 24/7, бронирует слоты и шлёт напоминания. Живое демо: салон, барбершоп, автосервис, стоматология." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%236d5efc'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+  <!-- ───────────── Sidebar ───────────── -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">✦</span>
+      <span class="brand-name">Запись<b>ИИ</b></span>
+    </div>
+
+    <nav class="nav" id="nav">
+      <button class="nav-item is-active" data-action="chat" data-label="ИИ-ассистент">
+        <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span><b>ИИ-ассистент</b><i>Общение с клиентами</i></span>
+      </button>
+      <button class="nav-item" data-view="calendar" data-label="Календарь">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span><b>Календарь</b><i>Записи и расписание</i></span>
+      </button>
+      <button class="nav-item" data-view="bookings" data-label="Записи">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span><b>Записи</b><i>Журнал броней <em id="navBkCount"></em></i></span>
+      </button>
+      <button class="nav-item" data-view="clients" data-label="Клиенты">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span><b>Клиенты</b><i>База и история</i></span>
+      </button>
+      <button class="nav-item" data-view="services" data-label="Услуги">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+        <span><b>Услуги</b><i>Прайс и длительность</i></span>
+      </button>
+      <button class="nav-item" data-action="scenario" data-label="Сценарии звонков">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span><b>Сценарии звонков</b><i>Перехват недозвонов</i></span>
+      </button>
+      <button class="nav-item" data-view="benefits" data-label="Аналитика">
+        <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l3-3 3 3 5-5"/></svg>
+        <span><b>Аналитика</b><i>Выгода и метрики</i></span>
+      </button>
+      <button class="nav-item" data-view="settings" data-label="Настройки">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span><b>Настройки</b><i>Бот и уведомления</i></span>
+      </button>
+    </nav>
+
+    <div class="side-promo">
+      <div class="side-promo-title">Тариф · Демо-режим</div>
+      <p>Все возможности ИИ-администратора. Настрою под ваш бизнес.</p>
+      <a class="side-promo-btn" id="promoBtn" href="#">Заказать систему</a>
+    </div>
+
+    <div class="side-user">
+      <div class="su-ava" id="userAva">Л</div>
+      <div class="su-id"><b id="userName">Лина</b><i id="userRole">ИИ-администратор</i></div>
+      <span class="su-dot"></span>
+    </div>
+  </aside>
+
+  <!-- ───────────── Main ───────────── -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>ИИ-администратор <span class="badge-on"><i></i>онлайн</span></h1>
+        <p>Отвечает на вопросы, подбирает услуги и записывает клиентов 24/7</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="niche-switch" id="nicheSwitch" role="tablist" aria-label="Тип бизнеса"></div>
+        <a class="btn btn-primary" id="orderBtn" href="#">Заказать систему</a>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <!-- Chat -->
+      <section class="panel chat-panel">
+        <div class="chat-header">
+          <div class="chat-avatar" id="chatAvatar">✦</div>
+          <div class="chat-id">
+            <div class="chat-title" id="chatTitle">Лина · ИИ-администратор</div>
+            <div class="chat-sub"><span class="online-dot"></span><span id="chatSub">Онлайн</span></div>
+          </div>
+          <button class="chat-tool" id="missedCall" title="Сценарий: пропущенный звонок ночью">📵</button>
+          <button class="chat-tool" id="chatReset" title="Начать заново">↺</button>
+        </div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-quick" id="chatQuick"></div>
+        <form class="chat-input" id="chatForm" autocomplete="off">
+          <input id="chatInput" type="text" placeholder="Напишите сообщение…" aria-label="Сообщение" maxlength="200" />
+          <button type="submit" aria-label="Отправить">
+            <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </form>
+        <div class="chat-foot">ИИ может ошибаться. Проверяйте важную информацию.</div>
+      </section>
+
+      <!-- Right panel -->
+      <aside class="panel right-panel">
+        <div class="right-head">
+          <div class="right-title" id="rightTitle">Календарь</div>
+          <div class="right-legend" id="rightLegend"><span class="dot free"></span>свободно <span class="dot busy"></span>занято</div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="rv" data-view="calendar">
+          <div class="cal-bar">
+            <div class="cal-month" id="calMonth">Июнь 2026</div>
+            <div class="cal-nav">
+              <button id="calPrev" aria-label="Предыдущий месяц">‹</button>
+              <button id="calNext" aria-label="Следующий месяц">›</button>
+            </div>
+          </div>
+          <div class="cal-dow"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="slots-block">
+            <div class="slots-title" id="slotsTitle">Выберите день</div>
+            <div class="slots" id="calSlots"></div>
+          </div>
+        </div>
+
+        <!-- Bookings -->
+        <div class="rv is-hidden" data-view="bookings">
+          <div class="rv-sub">Журнал записей — так бронь видит владелец бизнеса</div>
+          <div class="bk-list" id="bkList"></div>
+        </div>
+
+        <!-- Clients -->
+        <div class="rv is-hidden" data-view="clients">
+          <div class="rv-sub">База клиентов формируется автоматически из записей</div>
+          <div class="cl-list" id="clList"></div>
+        </div>
+
+        <!-- Services -->
+        <div class="rv is-hidden" data-view="services">
+          <div class="rv-sub">Услуги, длительность и цены — настраиваются под ваш прайс</div>
+          <div class="sv-list" id="svList"></div>
+        </div>
+
+        <!-- Benefits / analytics -->
+        <div class="rv is-hidden" data-view="benefits">
+          <div class="kpi-row">
+            <div class="kpi"><b id="kpiBookings">0</b><span>записей за сессию</span></div>
+            <div class="kpi"><b id="kpiRevenue">0 ₽</b><span>сумма броней</span></div>
+          </div>
+          <ul class="benefits">
+            <li><b>−40% пропущенных обращений.</b> ИИ ловит ночные сообщения и тех, кто не дозвонился.</li>
+            <li><b>Ноль двойных записей.</b> Слот блокируется в момент брони.</li>
+            <li><b>Меньше неявок.</b> Автонапоминания за день и за 2 часа до визита.</li>
+            <li><b>Разгрузка администратора.</b> Рутина уходит ИИ, человек — на сложных клиентах.</li>
+            <li><b>Реактивация «спящих».</b> ИИ сам пишет тем, кто давно не был.</li>
+          </ul>
+          <div class="roi">
+            <div class="roi-title">Грубая прикидка упущенной выручки</div>
+            <div class="roi-row"><span>Потеряно клиентов / неделю</span><b id="roiLost">~12</b></div>
+            <div class="roi-row"><span>Средний чек</span><b id="roiCheck">—</b></div>
+            <div class="roi-row roi-total"><span>Упущено / месяц</span><b id="roiSum">—</b></div>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="rv is-hidden" data-view="settings">
+          <div class="set-group">
+            <div class="set-label">Тип бизнеса (демо)</div>
+            <div class="niche-switch niche-switch-col" id="nicheSwitch2"></div>
+          </div>
+          <div class="set-group">
+            <div class="set-label">Уведомления и сценарии</div>
+            <label class="set-row"><span>Напоминание за 2 часа до визита</span><input type="checkbox" checked /><i class="sw"></i></label>
+            <label class="set-row"><span>Ночной перехват пропущенных звонков</span><input type="checkbox" checked /><i class="sw"></i></label>
+            <label class="set-row"><span>Реактивация «спящих» клиентов</span><input type="checkbox" /><i class="sw"></i></label>
+            <label class="set-row"><span>Подтверждение записи в WhatsApp</span><input type="checkbox" checked /><i class="sw"></i></label>
+          </div>
+          <div class="set-group">
+            <div class="set-label">Точка обслуживания</div>
+            <div class="set-info" id="setInfo"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="sc-ico">👥</div>
+        <div><div class="sc-num"><span data-count="67">0</span>%</div><div class="sc-label">клиентов хотят писать, а не звонить</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-ico">🕐</div>
+        <div><div class="sc-num"><span data-count="24">0</span>ч</div><div class="sc-label">на связи без выходных и перерывов</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-ico">⚡</div>
+        <div><div class="sc-num"><span data-count="3">0</span> сек</div><div class="sc-label">среднее время ответа ИИ</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-ico">📈</div>
+        <div><div class="sc-num">+<span data-count="32">0</span>%</div><div class="sc-label">конверсия в запись после диалога</div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ───────────── Pitch (scroll) ───────────── -->
+<section class="pitch">
+  <div class="wrap">
+    <h2>Как это работает</h2>
+    <div class="how-grid">
+      <div class="how-card"><div class="how-n">1</div><h3>Клиент пишет</h3><p>На сайт, в Telegram, WhatsApp или Instagram*. В любое время суток.</p></div>
+      <div class="how-card"><div class="how-n">2</div><h3>ИИ ведёт диалог</h3><p>Отвечает на вопросы, подбирает услугу, мастера и удобное время.</p></div>
+      <div class="how-card"><div class="how-n">3</div><h3>Бронирует слот</h3><p>Записывает в календарь, исключая накладки и двойные записи.</p></div>
+      <div class="how-card"><div class="how-n">4</div><h3>Напоминает</h3><p>Шлёт напоминания и возвращает «спящих» клиентов сам.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-inner">
+    <div class="contact-copy">
+      <h2>Внедрение под ваш бизнес</h2>
+      <p>Настрою ИИ-администратора под ваши услуги, цены и расписание. Подключу к мессенджерам и календарю.</p>
+      <ul class="price-list">
+        <li><span>Запуск под ключ</span><b>от 30 000 ₽</b></li>
+        <li><span>Поддержка и обновления</span><b>от 3 000 ₽ / мес</b></li>
+      </ul>
+      <a class="btn btn-primary" id="contactBtn" href="#">Написать мне</a>
+      <p class="contact-by">Никита Ульянов · разработка ИИ-решений для бизнеса · <a class="contact-link" href="https://coldinfinity696969-byte.github.io" target="_blank" rel="noopener">портфолио</a></p>
+    </div>
+    <div class="contact-card">
+      <div class="cc-title">Что входит в запуск</div>
+      <ul>
+        <li>Обучение ИИ под ваши услуги и тон</li>
+        <li>Подключение к Telegram / WhatsApp / сайту</li>
+        <li>Интеграция с календарём записи</li>
+        <li>Сценарии напоминаний и реактивации</li>
+        <li>Обучение вашего администратора</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-note">© 2026 ЗаписьИИ · демо-продукт. <span>* Instagram принадлежит Meta, признанной экстремистской в РФ.</span></div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
