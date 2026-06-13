@@ -156,12 +156,29 @@ function switchNiche(key) {
 }
 
 /* ───────────────────────── Навигация / виды ───────────────────────── */
-function showView(name) {
+const isMobile = () => window.matchMedia('(max-width: 920px)').matches;
+
+// на телефоне показываем одну панель за раз: 'chat' | 'right'
+function revealPanel(which) {
+  const ws = $('.workspace');
+  ws.classList.toggle('m-chat', which === 'chat');
+  ws.classList.toggle('m-right', which === 'right');
+  if (isMobile()) {
+    const y = ws.getBoundingClientRect().top + window.scrollY - 62;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }
+}
+
+function setNavActive(el) {
+  document.querySelectorAll('.nav-item').forEach((b) => b.classList.remove('is-active'));
+  if (el) el.classList.add('is-active');
+}
+
+function showView(name, setNav = true) {
   document.querySelectorAll('.rv').forEach((v) => v.classList.toggle('is-hidden', v.dataset.view !== name));
   $('#rightTitle').textContent = VIEW_TITLES[name] || '';
   $('#rightLegend').style.display = name === 'calendar' ? '' : 'none';
-  document.querySelectorAll('.nav-item[data-view]').forEach((b) => b.classList.toggle('is-active', b.dataset.view === name));
-  document.querySelectorAll('.nav-item[data-action]').forEach((b) => b.classList.remove('is-active'));
+  if (setNav) setNavActive(document.querySelector(`.nav-item[data-view="${name}"]`));
   if (name === 'bookings') renderBookings();
   if (name === 'clients') renderClients();
   if (name === 'services') renderServices();
@@ -171,13 +188,13 @@ function showView(name) {
 function initNav() {
   document.querySelectorAll('.nav-item').forEach((item) => {
     item.onclick = () => {
-      if (item.dataset.view) return showView(item.dataset.view);
-      if (item.dataset.action === 'chat') {
-        document.querySelectorAll('.nav-item').forEach((b) => b.classList.remove('is-active'));
-        item.classList.add('is-active');
-        $('#chatInput').focus();
+      if (item.dataset.view) { showView(item.dataset.view); revealPanel('right'); return; }
+      if (item.dataset.action === 'chat') { setNavActive(item); revealPanel('chat'); if (!isMobile()) $('#chatInput').focus(); }
+      if (item.dataset.action === 'scenario') {
+        item.classList.add('flash'); setTimeout(() => item.classList.remove('flash'), 500);
+        setNavActive(document.querySelector('[data-action="chat"]'));
+        revealPanel('chat'); simulateMissedCall();
       }
-      if (item.dataset.action === 'scenario') { item.classList.add('flash'); setTimeout(() => item.classList.remove('flash'), 500); simulateMissedCall(); }
     };
   });
 }
@@ -244,8 +261,8 @@ function findService(text) {
 function resumeStep() {
   switch (state) {
     case 'service': return offerServices();
-    case 'date': return botSay('Так на какой день вас записать? Календарь справа 👉');
-    case 'time': return botSay('Выберите удобное время из свободных слотов 👉');
+    case 'date': return offerDays();
+    case 'time': return offerTimes(selDayKey);
     case 'name': return botSay('Так как вас зовут? ✍️');
     case 'phone': return botSay('Оставьте, пожалуйста, номер телефона 📱');
   }
@@ -255,9 +272,14 @@ async function handleInput(text, meta = {}) {
   const raw = (text || '').trim().slice(0, 200);
   if (!raw) return;
   const human = meta.kind === 'service'
-    ? cfg().services.find((s) => s.id === (meta.id || raw))?.name || raw : raw;
+    ? cfg().services.find((s) => s.id === (meta.id || raw))?.name || raw
+    : (meta.label || raw);
   addMsg(human, 'user');
   clearQuick();
+
+  // выбор дня/времени кнопкой в чате (работает и на телефоне без календаря)
+  if (meta.kind === 'day') return selectDay(meta.key, false);
+  if (meta.kind === 'time') return selectTime(meta.value, false);
 
   const low = raw.toLowerCase();
   const freeText = state !== 'name' && state !== 'phone';
@@ -287,8 +309,28 @@ async function onService(text) {
   if (!s) { await botSay('Уточните, пожалуйста — какая услуга нужна? Можно выбрать из списка 👇'); return offerServices(); }
   booking.service = s;
   state = 'date';
-  showView('calendar');
-  await botSay(`Отлично — «${s.name}» (${s.dur} мин, ${ruble(s.price)}). На какой день вас записать? Выберите в календаре справа 👉 или напишите, например «завтра».`);
+  showView('calendar', false);
+  await botSay(`Отлично — «${s.name}» (${s.dur} мин, ${ruble(s.price)}). На какой день вас записать? Выберите ниже 👇 или напишите, например «завтра».`);
+  offerDays();
+}
+
+// кнопки-дни прямо в чате — ближайшие свободные дни
+function offerDays() {
+  const today = new Date();
+  const opts = [];
+  for (let i = 0; i < WINDOW_DAYS && opts.length < 6; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    const key = dayKey(d);
+    if (freeCount(key) === 0) continue;
+    const label = i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : `${DOW[d.getDay()]}, ${d.getDate()}`;
+    opts.push({ label, kind: 'day', key });
+  }
+  setQuick(opts);
+}
+
+// кнопки-слоты времени прямо в чате
+function offerTimes(key) {
+  setQuick(TIMES.filter((t) => !slotBlocked(key, t)).map((t) => ({ label: t, value: t, kind: 'time' })));
 }
 
 function resolveDayText(text) {
@@ -308,7 +350,7 @@ function resolveDayText(text) {
 
 async function onDateText(text) {
   const d = resolveDayText(text);
-  if (!d) { await botSay('Не уловил дату 🙈 Выберите день в календаре справа или напишите «завтра», «в субботу», «15».'); return; }
+  if (!d) { await botSay('Не уловил дату 🙈 Выберите день ниже или напишите «завтра», «в субботу», «15».'); offerDays(); return; }
   selectDay(dayKey(d), false);
 }
 
@@ -325,18 +367,19 @@ async function selectDay(key, fromCalendar) {
   // показать нужный месяц в календаре
   const today = new Date();
   calMonthOffset = (parseKey(key).getFullYear() - today.getFullYear()) * 12 + (parseKey(key).getMonth() - today.getMonth());
-  showView('calendar');
+  showView('calendar', false);
   renderCalendar();
   renderSlots(key);
   if (fromCalendar) addMsg(dayLabel(key), 'user');
-  await botSay(`${dayLabel(key)} — отлично. Вот свободное время, выберите слот 👉 или напишите, например «16:00».`);
+  await botSay(`${dayLabel(key)} — отлично. Вот свободное время, выберите ниже 👇 или напишите, например «16:00».`);
+  offerTimes(key);
 }
 
 async function onTimeText(text) {
   const m = text.match(/(\d{1,2})[:.\s]?(\d{2})?/);
   let pick = null;
   if (m) { const hh = m[1].padStart(2, '0'); const mm = m[2] || '00'; pick = TIMES.find((t) => t === `${hh}:${mm}`) || TIMES.find((t) => t.startsWith(hh + ':')); }
-  if (!pick) { await botSay('Подскажите время точнее — например «14:30». Свободные слоты показаны справа 👉'); return; }
+  if (!pick) { await botSay('Подскажите время точнее — например «14:30». Свободные слоты — ниже 👇'); offerTimes(selDayKey); return; }
   selectTime(pick, false);
 }
 
@@ -462,7 +505,8 @@ function renderCalendar() {
 
 async function onCalDayClick(key) {
   if (state === 'done') return;
-  if (state === 'service' || state === 'start') { await botSay('Сначала выберите услугу 🙂 — отметьте её в чате слева.'); offerServices(); return; }
+  if (isMobile()) { setNavActive(document.querySelector('[data-action="chat"]')); revealPanel('chat'); }
+  if (state === 'service' || state === 'start') { await botSay('Сначала выберите услугу 🙂 — отметьте её кнопкой в чате.'); offerServices(); return; }
   selectDay(key, true);
 }
 
@@ -486,8 +530,9 @@ function renderSlots(key) {
 
 async function onSlotClick(t) {
   if (state === 'done') return;
+  if (isMobile()) { setNavActive(document.querySelector('[data-action="chat"]')); revealPanel('chat'); }
   if (state === 'service' || state === 'start') { await botSay('Сначала выберите услугу 🙂'); offerServices(); return; }
-  if (!selDayKey) { await botSay('Сначала выберите день в календаре 👆'); return; }
+  if (!selDayKey) { await botSay('Сначала выберите день 👆'); offerDays(); return; }
   selectTime(t, true);
 }
 
@@ -573,10 +618,13 @@ function init() {
   applyTheme();
   initNav();
   animateCounters();
-  showView('calendar');
+  showView('calendar', false);   // подготовить правую панель (контент = календарь)
   refreshCrm();
   renderServices();
   resetChat();
+  // по умолчанию: активна вкладка «ИИ-ассистент», на телефоне виден чат
+  setNavActive(document.querySelector('[data-action="chat"]'));
+  revealPanel('chat');
 
   $('#chatForm').addEventListener('submit', (e) => {
     e.preventDefault();

@@ -270,18 +270,38 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 }
 @media (max-width: 920px) {
   .app { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 18px; }
-  .brand { padding: 0; }
-  .nav { flex-direction: row; flex-wrap: wrap; flex: 1 1 100%; order: 3; gap: 6px; }
-  .nav-item { flex-direction: row; padding: 8px 12px; }
-  .nav-item i { display: none; }
+  .sidebar {
+    position: sticky; top: 0; z-index: 30; height: auto;
+    flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+    padding: 11px 15px; box-shadow: 0 2px 14px -6px rgba(40, 38, 90, .18);
+  }
+  .brand { padding: 0; font-size: 19px; }
   .side-promo { display: none; }
-  .side-user { border: 0; margin: 0; padding: 0; margin-left: auto; }
-  .main { padding: 20px 18px 32px; }
+  .side-user { border: 0; margin: 0 0 0 auto; padding: 0; }
+  /* навигация → горизонтальная лента табов */
+  .nav {
+    order: 3; flex: 1 1 100%; flex-direction: row; flex-wrap: nowrap; gap: 7px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-item { flex: 0 0 auto; flex-direction: row; gap: 8px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 100px; white-space: nowrap; }
+  .nav-item i { display: none; }
+  .nav-item b { font-size: 13px; }
+  .nav-item.is-active { border-color: var(--accent); }
+  .main { padding: 18px 16px 34px; }
+  /* панели-табы: на телефоне показываем одну за раз */
+  .workspace { gap: 0; }
+  .workspace.m-chat .right-panel { display: none; }
+  .workspace.m-right .chat-panel { display: none; }
+  .chat-panel { height: 72vh; min-height: 440px; }
+  .right-panel { height: auto; max-height: none; }
 }
 @media (max-width: 560px) {
-  .nav-item span { display: none; }
-  .nav-item { padding: 9px; }
+  .topbar { gap: 14px; }
+  .topbar-title h1 { font-size: 22px; }
   .topbar-actions { width: 100%; }
-  .niche-switch { width: 100%; overflow-x: auto; }
+  .niche-switch { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .niche-switch::-webkit-scrollbar { display: none; }
+  .niche-btn { flex: 0 0 auto; }
+  #orderBtn { display: none; }
 }
