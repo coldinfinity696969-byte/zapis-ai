@@ -79,7 +79,8 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 .topbar-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
 .niche-switch { display: inline-flex; gap: 4px; background: #fff; padding: 5px; border-radius: 12px; border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
-.niche-btn { border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); padding: 8px 12px; border-radius: 9px; transition: background .2s, color .2s; white-space: nowrap; }
+.niche-btn { display: inline-flex; align-items: center; gap: 7px; border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); padding: 8px 13px; border-radius: 9px; transition: background .2s, color .2s; white-space: nowrap; }
+.niche-btn svg { width: 16px; height: 16px; flex: none; }
 .niche-btn:hover { color: var(--ink); }
 .niche-btn.is-active { background: var(--accent); color: #fff; }
 .niche-switch-col { flex-direction: column; box-shadow: none; padding: 0; gap: 6px; border: 0; background: transparent; }
@@ -93,7 +94,8 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 /* ── Chat ── */
 .chat-panel { display: flex; flex-direction: column; height: 600px; }
 .chat-header { display: flex; align-items: center; gap: 13px; padding: 16px 18px; border-bottom: 1px solid var(--line-soft); }
-.chat-avatar { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; font-size: 22px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); flex: none; }
+.chat-avatar { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); flex: none; }
+.chat-avatar svg { width: 23px; height: 23px; stroke: #fff; }
 .chat-id { flex: 1; min-width: 0; }
 .chat-title { font-weight: 700; font-size: 16px; }
 .chat-sub { font-size: 13px; color: var(--good); display: flex; align-items: center; gap: 6px; }
@@ -220,14 +222,16 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 /* Stat cards */
 .stats-row { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 20px; }
 .stat-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow-sm); }
-.sc-ico { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; font-size: 21px; flex: none; }
+.sc-ico { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; flex: none; }
+.sc-ico svg { width: 22px; height: 22px; }
 .sc-num { font-size: 26px; font-weight: 800; color: var(--accent); line-height: 1; }
 .sc-label { font-size: 12.5px; color: var(--muted); margin-top: 5px; line-height: 1.35; }
 
 /* Toast */
 .toast { position: fixed; right: 24px; bottom: 24px; background: var(--ink); color: #fff; padding: 15px 18px 15px 16px; border-radius: 15px; box-shadow: var(--shadow); display: flex; gap: 13px; align-items: flex-start; max-width: 370px; z-index: 60; transform: translateY(160%); transition: transform .4s cubic-bezier(.2,.8,.2,1); font-size: 14px; line-height: 1.45; }
 .toast.show { transform: translateY(0); }
-.toast .t-ico { width: 32px; height: 32px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; flex: none; font-size: 16px; }
+.toast .t-ico { width: 32px; height: 32px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; flex: none; }
+.toast .t-ico svg { width: 17px; height: 17px; stroke: #fff; }
 .toast b { display: block; margin-bottom: 3px; } .toast small { color: #b7bccb; }
 
 /* Pitch sections */

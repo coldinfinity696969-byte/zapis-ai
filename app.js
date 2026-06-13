@@ -7,7 +7,7 @@
 /* ───────────────────────── Конфиг ниш ───────────────────────── */
 const NICHES = {
   salon: {
-    label: '💇 Салон', accent: '#d6457f', accentSoft: '#fdeef4', avatar: '✦',
+    label: 'Салон красоты', accent: '#d6457f', accentSoft: '#fdeef4',
     name: 'Лина', role: 'Администратор салона «Аура»',
     greeting: 'Здравствуйте! 🌸 Я Лина, ИИ-администратор салона «Аура». Помогу подобрать услугу и записать вас на удобное время. С чего начнём?',
     address: 'ул. Ленина, 28 (вход с улицы, центр)', hours: 'ежедневно с 10:00 до 21:00',
@@ -22,7 +22,7 @@ const NICHES = {
     popular: 'hair-cut'
   },
   barber: {
-    label: '💈 Барбершоп', accent: '#1f6feb', accentSoft: '#e9f1ff', avatar: '✂',
+    label: 'Барбершоп', accent: '#1f6feb', accentSoft: '#e9f1ff',
     name: 'Макс', role: 'Барбершоп «Бритва»',
     greeting: 'Здарова! ✂️ На связи Макс, ИИ-администратор «Бритвы». Подскажу по услугам и запишу к мастеру. Что нужно?',
     address: 'ул. Маяковского, 14 (второй этаж)', hours: 'ежедневно с 10:00 до 22:00',
@@ -37,7 +37,7 @@ const NICHES = {
     popular: 'cut'
   },
   auto: {
-    label: '🔧 Автосервис', accent: '#e8590c', accentSoft: '#fff0e6', avatar: '⚙',
+    label: 'Автосервис', accent: '#e8590c', accentSoft: '#fff0e6',
     name: 'Сервис-бот', role: 'Автосервис «ГаражЪ»',
     greeting: 'Здравствуйте! 🔧 Это ИИ-администратор автосервиса «ГаражЪ». Запишу вашу машину на удобное время. Что беспокоит?',
     address: 'ул. Заводская, 3к2 (заезд с переулка)', hours: 'пн–сб с 9:00 до 20:00',
@@ -57,7 +57,7 @@ const NICHES = {
     }]
   },
   clinic: {
-    label: '🦷 Стоматология', accent: '#0d9488', accentSoft: '#e6f7f4', avatar: '✚',
+    label: 'Стоматология', accent: '#0d9488', accentSoft: '#e6f7f4',
     name: 'Регистратура', role: 'Клиника «Дентал+»',
     greeting: 'Здравствуйте! 🦷 ИИ-администратор клиники «Дентал+». Помогу выбрать услугу и записаться к врачу. Что вас беспокоит?',
     address: 'пр-т Мира, 45 (1 этаж, отдельный вход)', hours: 'пн–сб с 8:00 до 20:00',
@@ -95,6 +95,20 @@ const MONTHS_GEN = ['января','февраля','марта','апреля',
 const MONTHS_NOM = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const VIEW_TITLES = { calendar: 'Календарь', bookings: 'Записи', clients: 'Клиенты', services: 'Услуги', benefits: 'Аналитика', settings: 'Настройки' };
 const WINDOW_DAYS = 14;
+
+/* Векторные иконки (тонкая линия, единый стиль) — вместо эмодзи */
+const ICONS = {
+  salon: '<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>',
+  barber: '<svg viewBox="0 0 24 24"><path d="M3 7.5h18"/><path d="M6 7.5v9M10 7.5v4.5M14 7.5v9M18 7.5v4.5"/></svg>',
+  auto: '<svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+  clinic: '<svg viewBox="0 0 24 24"><path d="M12 5.5C10.5 4 8.6 3.2 6.9 3.6 4.9 4 3.6 5.8 3.7 8.4c.1 1.6.5 3.5 1 5.4.4 1.6.8 3.6 1.4 4.6.5.9 1.6.8 1.9-.2.4-1.4.7-3.2 1.1-4.2.3-.7.6-1.1 1-1.1s.7.4 1 1.1c.4 1 .7 2.8 1.1 4.2.3 1 1.4 1.1 1.9.2.6-1 1-3 1.4-4.6.5-1.9.9-3.8 1-5.4.1-2.6-1.2-4.4-3.2-4.8-1.7-.4-3.6.4-5.2 1.9z"/></svg>',
+  users: '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  clock: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 1.8"/></svg>',
+  bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>',
+  trend: '<svg viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>',
+  bell: '<svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+  phoneOff: '<svg viewBox="0 0 24 24"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.8 12.8 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.4 19.4 0 0 1-3.33-2.67m-2.67-3.34a19.8 19.8 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91"/><line x1="23" y1="1" x2="1" y2="23"/></svg>'
+};
 
 /* ───────────────────────── DOM ───────────────────────── */
 const $ = (s) => document.querySelector(s);
@@ -141,7 +155,7 @@ function renderNicheSwitch() {
     Object.entries(NICHES).forEach(([key, n]) => {
       const b = document.createElement('button');
       b.className = 'niche-btn' + (key === niche ? ' is-active' : '');
-      b.textContent = n.label;
+      b.innerHTML = ICONS[key] + '<span>' + n.label + '</span>';
       b.onclick = () => switchNiche(key);
       sw.appendChild(b);
     });
@@ -153,7 +167,7 @@ function applyTheme() {
   document.documentElement.style.setProperty('--accent', n.accent);
   document.documentElement.style.setProperty('--accent-soft', n.accentSoft);
   $('#chatTitle').textContent = `${n.name} · ИИ-администратор`;
-  $('#chatAvatar').textContent = n.avatar;
+  $('#chatAvatar').innerHTML = ICONS[niche];
   $('#userName').textContent = n.name;
   $('#userRole').textContent = n.role;
   $('#userAva').textContent = n.name[0];
@@ -542,12 +556,12 @@ async function confirmBooking() {
   setQuick([{ label: '↺ Записать ещё раз', value: 'заново' }]);
 
   const remindDay = d.getDate() + ' ' + monthName(d);
-  setTimeout(() => showToast('📩', 'Напоминание клиенту отправлено', `«${cfg().name}: напоминаем о записи на ${booking.service.name} ${remindDay} в ${booking.time}. Ждём вас!»`), 1800);
+  setTimeout(() => showToast(ICONS.bell, 'Напоминание клиенту отправлено', `«${cfg().name}: напоминаем о записи на ${booking.service.name} ${remindDay} в ${booking.time}. Ждём вас!»`), 1800);
 }
 
 async function simulateMissedCall() {
   resetChat(false);
-  showToast('📵', 'Пропущенный звонок · 02:14 ночи', 'Клиент +7 913 482-17-56 не дозвонился. ИИ перехватывает обращение и пишет в мессенджер →');
+  showToast(ICONS.phoneOff, 'Пропущенный звонок · 02:14 ночи', 'Клиент +7 913 482-17-56 не дозвонился. ИИ перехватывает обращение и пишет в мессенджер →');
   await botSay('Здравствуйте! 👋 Видим, вы звонили нам ночью и не дозвонились — простите, мы уже не работали. Я ИИ-администратор и запишу вас прямо здесь, это займёт минуту. Что вас интересует?', 1100);
   offerServices();
 }
@@ -557,7 +571,7 @@ let toastTimer = null;
 function showToast(icon, title, sub) {
   const toast = $('#toast');
   toast.innerHTML = '';
-  const ico = document.createElement('div'); ico.className = 't-ico'; ico.textContent = icon;
+  const ico = document.createElement('div'); ico.className = 't-ico'; ico.innerHTML = icon;
   const body = document.createElement('div');
   const b = document.createElement('b'); b.textContent = title;
   const small = document.createElement('small'); small.textContent = sub;
